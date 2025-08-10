@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Kod Üretici - Kaan Kayserili</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #111;
+      color: whitesmoke;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      background-color: #333;
+    }
+
+    input, button {
+      margin: 10px;
+      padding: 10px 15px;
+      font-size: 16px;
+    }
+
+    #qrcode {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <h1>QR Kod Üretici</h1>
+  <input type="text" id="text" placeholder="Metni buraya girin">
+  <button onclick="generateQRCode()">Oluştur</button>
+  <div id="qrcode"></div>
+  <button onclick="downloadQRCode()">İndir</button>
+</main>
+
+<script>
+  function generateQRCode() {
+    const text = document.getElementById("text").value;
+    const qrContainer = document.getElementById("qrcode");
+    qrContainer.innerHTML = "";
+    if (text.trim() !== "") {
+      QRCode.toCanvas(document.createElement('canvas'), text, { width: 256 }, function (err, canvas) {
+        if (err) console.error(err);
+        qrContainer.appendChild(canvas);
+      });
+    }
+  }
+
+  function downloadQRCode() {
+  const canvas = document.querySelector("#qrcode canvas");
+  if (!canvas) return;
+
+  const link = document.createElement("a");
+  link.href = canvas.toDataURL("image/png");
+  link.download = "qr-kod.png";
+  link.click();
+}
+</script>
+
+</body>
+</html>
